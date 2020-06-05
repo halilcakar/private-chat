@@ -1,4 +1,4 @@
-const { host, PORT, SOCKET_PORT } = require('./src/config');
+const { host, PORT, SOCKET_PORT, APP_ENV } = require('./src/config');
 console.clear();
 const { UUID, Last } = require('./src/functions');
 const express = require('express')
@@ -14,7 +14,7 @@ const io = require('socket.io')(server);
 app.use(express.static(path.join(__dirname, 'public')))
     .set('views', path.join(__dirname, 'views'))
     .set('view engine', 'ejs')
-    .get('/', (req, res) => res.render('pages/index', { url: `http://${host}:${SOCKET_PORT}` }))
+    .get('/', (req, res) => res.render('pages/index', { url: APP_ENV === 'local' ? `http://${host}:${SOCKET_PORT}` : `window.location.href` }))
     .listen(PORT, () => console.log(`Listening on http://${host}:${PORT}`))
 
 const channels = [];
