@@ -1,0 +1,8 @@
+node_modules
+npm-debug.log
+
+# Local development
+*.env
+*.dev
+*.vscode
+.DS_Store

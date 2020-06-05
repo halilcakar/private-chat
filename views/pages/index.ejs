@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<head>
+    <%- include ('../partials/header') %>
+</head>
+
+<body style="color: #383d41;">
+    <section class="d-flex flex-column justify-content-center align-items-center vh-100">
+        <div id="channel-form" class="row flex-column justify-content-center align-items-center">
+            <h1 class="mb-3">Private Chat with Mates!</h1>
+            <input id="username" placeholder="Username" class="form-control w-50 mb-3" type="text">
+            <button id="createChannel" class="btn btn-success">Create a Channel</button>
+        </div>
+
+        <%- include('../partials/chat') %>
+    </section>
+</body>
+<script>
+    var socket_url = "<%= url %>";
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.dev.js"></script>
+<script src="/js/index.js"></script>
+
+</html>
