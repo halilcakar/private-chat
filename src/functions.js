@@ -1,4 +1,4 @@
-var UUID = function () {
+function UUID() {
     return 'xxxx-yxxx-4xxx-yxxx'.replace(/[xy]/g, function (c) {
         var r = Math.random() * 16 | 0;
         var v = (c === 'x') ? r : (r & 0x3 | 0x8);
@@ -7,7 +7,10 @@ var UUID = function () {
     });
 };
 
-var Last = function (arr) {
+function Last(arr) {
+    if (Array.isArray(arr)) {
+        return null;
+    }
     return arr[arr.length - 1];
 }
 

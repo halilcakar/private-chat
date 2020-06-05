@@ -1,21 +1,34 @@
-const { host, PORT, SOCKET_PORT, APP_ENV } = require('./src/config');
+const { host, PORT, SOCKET_PORT, APP_ENV, SSL } = require('./src/config');
 console.clear();
 const { UUID, Last } = require('./src/functions');
 const express = require('express')
 const path = require('path')
 const app = express();
-const server = require('http').createServer(app);
+
+
+let protocol = 'http';
+let options = {};
+if (APP_ENV === 'production') {
+    protocol = 'https';
+    options = {
+        key: fs.readFileSync(SSL.KEY),
+        cert: fs.readFileSync(SSL.CERT)
+    };
+}
+
+const server = require(protocol).createServer(options, app);
 server.listen({ host, port: SOCKET_PORT }, () => {
-    console.log(`HTTP server listening on http://${host}:${SOCKET_PORT}`)
+    console.log(`Server listening on ${protocol}://${host}:${SOCKET_PORT}`)
 });
+
 const io = require('socket.io')(server);
 
 
 app.use(express.static(path.join(__dirname, 'public')))
     .set('views', path.join(__dirname, 'views'))
     .set('view engine', 'ejs')
-    .get('/', (req, res) => res.render('pages/index', { url: APP_ENV === 'local' ? `http://${host}:${SOCKET_PORT}` : `window.location.href` }))
-    .listen(PORT, () => console.log(`Listening on http://${host}:${PORT}`))
+    .get('/', (req, res) => res.render('pages/index', { url: `${protocol}://${host}:${SOCKET_PORT}` }))
+    .listen(PORT, () => console.log(`Listening on ${protocol}://${host}:${PORT}`))
 
 const channels = [];
 
