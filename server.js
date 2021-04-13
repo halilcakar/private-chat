@@ -98,6 +98,28 @@ io.on("connection", (socket) => {
       }
     }
   });
+
+  socket.on("disconnect", () => {
+    let channel = channels.find((ch) =>
+      [ch.creatorID, ch.visitorID].includes(socket.id)
+    );
+    if (channel) {
+      if (channel.creatorID === socket.id) {
+        channel.creator = null;
+        channel.creatorID = null;
+      }
+      if (channel.visitorID === socket.id) {
+        channel.visitor = null;
+        channel.visitorID = null;
+      }
+      io.in(channel.id).emit("userLeft");
+
+      if (channel.visitor === null && channel.creator === null) {
+        channels.splice(channels.indexOf(channel), 1);
+        process.nextTick(() => (channel = null));
+      }
+    }
+  });
 });
 
 server.listen(PORT, () => {
