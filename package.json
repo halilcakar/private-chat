@@ -23,7 +23,7 @@
   "homepage": "https://github.com/halilcakar/private-chat#readme",
   "devDependencies": {
     "@types/express": "4.17.6",
-    "nodemon": "2.0.4"
+    "nodemon": "2.0.20"
   },
   "dependencies": {
     "dotenv": "8.2.0",
